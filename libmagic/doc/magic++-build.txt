@@ -1,0 +1,274 @@
+================================================================================
+  MagiCLib Build System
+  Version 0.1.1
+  Copyright (c) 2002-2003 Marko Grönroos
+================================================================================
+
+========
+Contents
+========
+
+1. Introduction
+2. Top-level makefile
+3. Module-level makefiles
+4. Local make definitions and rules
+5. Configuration
+
+===============
+1. Introduction
+===============
+MagiC++ Build System consists of three components:
+
+  - GNU Make
+
+  - Build Framework
+
+         Consists of a set of makefiles in $MAGICDIR/build that are included
+	 from the project makefiles.
+
+  - Configuration Framework
+
+         Consists of a configure script that determines and sets settings
+         for GNU Make. Allows user to define application-specific
+         requirements, which should be checked by the framework.
+
+-------------
+1.1. Features
+-------------
+The main features of the build system are:
+
+  - Clean and systematic directory organization
+
+  - Recursive building of project modules
+
+  - Output tree is completely separate from source tree, which keeps the
+    source tree "tidy" at all times. This allows easy source packaging
+    and cleaning the outputs.
+
+  - A configure script for automatic generation of local settings. This
+    generates only one file, $SRCDIR/build/config.mk.
+
+  - Automatic updating of build version information.
+
+--------------------------
+1.2. Build Framework files
+--------------------------
+The Build Framework is defined in the following makefiles, which are
+included from top-level recursive makefile or module makefiles:
+
+  - $MAGICDIR/build/magicdef.mk
+
+        Reads the local config.mk and makes various other definitions for
+        the build framework. Some of these definitions can be overridden in
+        the project's makefile invoking the framework.
+
+        This makefile must always be included before the other includes.
+
+  - $MAGICDIR/build/magictop.mk
+
+        Handles recursive making of top-level module that has no source
+        code.
+
+  - $MAGICDIR/build/magiccmp.mk
+
+	Contains rules for compiling and installing a software module.
+	The main targets are:
+	    * deps        - Makes dependencies
+	    * all         - Compiles everything
+	    * install     - Installs everything
+	    * uninstall   - Uninstalls everything
+	    * dist        - Creates a tarball for source distribution
+	    * clean       - Deletes all project output files
+
+=========================
+2. Top-level organization
+=========================
+The top level organization of a project using the MagiCLib Build System
+should be as follows:
+
+-- $SRCDIR
+   |-- README.TXT           - General information about the software
+   |-- configure            - Configuration script
+   |
+   |-- Makefile             - Top-level recursive makefile
+   |
+   |-- build
+   |   |-- config.mk        - Local config file generated with "configure" script
+   |   |-- <proj>def.mk     - (OPTIONAL) Project-specific definitions
+   |   |-- <proj>cmp.mk     - (OPTIONAL) Project-specific compilation rules
+   |   `-- <proj>top.mk     - (OPTIONAL) Project-specific top-level rules
+   |
+   |-- docs
+   |   |-- INSTALL.TXT      - General installation instructions
+   |   |-- LICENCE-GPL.TXT  - GPL License for applications
+   |   `-- LICENCE-LGPL.TXT - LGPL Licence for libraries
+   |
+   `-- ...                  - Software modules
+
+The <proj> is a project name prefix.
+
+---------------------------------
+2.1. Top-level recursive makefile
+---------------------------------
+You only need to define the "makemodules" variable in the top-level
+makefile to list the modules to be compiled.
+
+The makefile should have the following contents:
+
+    # Define defaults for root directory of the source tree and MAGICDIR
+    export SRCDIR      ?= .
+    export MAGICDIR    ?= ../../magic
+
+    # Package and version info
+    export packagename = magic
+    export vermajor    = 1
+    export verminor    = 3
+    export verbuild    = 1
+    export versuffix   = alpha
+
+    # Extra directories
+    distdirs   = build doc include include/magic
+
+    # Extra files
+    distfiles  = README.TXT configure Makefile
+    buildfiles = conf-reqs.sh \
+                 <module>def.mk ...
+
+    # Include build framework
+    include $(MAGICDIR)/build/magicdef.mk
+
+    # Recursively call sub-makes for modules
+    makemodules = <module> ...
+
+    # Include build rules
+    include $(MAGICDIR)/build/magictop.mk
+
+The top-level makefile should usually be named "Makefile", to allow
+compiling with simply "make".
+
+    SRCDIR
+
+        Relative path to the source directory. Should be ".", and defined
+        with ?= to allow overriding from environment.
+
+    MAGICDIR
+
+        Path to the MagiCLib directory, either the installed directory or
+        build directory (or source directory if compiling MagiCLib itself).
+        This can be left out, making it mandatory to provide the directory
+        from environment.
+
+    packagename
+
+        Name of the entire software package. This name is used for the
+        "dist" target for building a source distribution package.
+
+    vermajor, verminor, verbuild, versuffix.
+
+        Version info for the module. This information is used for the
+        "dist" target for building a source distribution package, for
+        example "mypackage-1.3.2beta.src.tar.bz2".
+
+    distdirs
+
+        Extra directories for the source distribution. "build", "config",
+        "data", "doc", "src", "include", and any module directories are
+        included implicitly, if needed.
+
+    distfiles
+
+        Extra files to be included in the source distribution. You should
+        include "Makefile", "configure", "README.TXT", and any other such
+        files explicitly.
+
+    buildfiles
+
+        Build system and configuration files in the "build" directory to be
+        included in the source distribution.
+
+    makemodules
+
+        List of (sub-)modules included in the package.
+
+=========================
+3. Module-level makefiles
+=========================
+A module consists of:
+
+  - Makefile to build the module
+  - Source code for the module executables
+  - Possible configuration file templates
+  - Possible data
+  - Sub-modules
+
+The directory hierarchy is organized as follows:
+
+-- $SRCDIR
+   `-- <module>
+       |-- <module>.mk            - Makefile for compiling the module
+       |-- src                    - Source files
+       |-- include                - Header files
+       |-- [config]               - Configuration files
+       |-- [data]                 - Data files
+       |-- [build]                - Module-specific makefiles
+       |-- <submodule1>           - A sub-module
+       |   |-- <submodule1>.mk    - Makefile for compiling the sub-module
+       |   |-- src
+       |   `-- include
+       `-- <submodule2>
+           ...
+
+For library modules, there is typically one sub-module, for testing the
+library.
+
+===================================
+4. Local make definitions and rules
+===================================
+
+4.2. Project-specific definitions file
+
+
+
+================
+5. Configuration
+================
+The configure script generates a local config.mk file in $SRC/build. This
+file is the only file locally generated in the source tree.
+
+While it would be wonderful to go without this local config file, it
+defines things which are higly necessary.
+
+===========
+6. Building
+===========
+Building with MagiC++ Build System is almost as with GNU Automake and Autoconf:
+
+    $ ./configure           - Generates build/config.mk
+    $ make deps             - Makes dependencies (optional)
+    $ make                  - Builds the software package to output hierarchy
+    $ make install          - Installs the software to installation hierarchy
+
+For more about configuring, building, and installing, see INSTALL.TXT file.
+
+----------------
+6.1. Configuring
+----------------
+Just as with GNU Configure, you can give options to the configure script:
+
+  Get help:
+    $ ./configure --help
+
+  Set installation directory:
+    $ ./configure --prefix=/usr/local
+
+  Disable software modules or features:
+    $ ./configure --disable-xxx
+
+    $ ./configure --extra-includedir=/usr/local/include
+    $ ./configure --extra-libs=m
+    $ ./configure --extra-libdir=/usr/local/lib
+
+-------------
+6.2. Building
+-------------
+

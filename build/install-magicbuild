@@ -1,0 +1,59 @@
+#!/bin/sh
+################################################################################
+#    This file is part of the MagiCBuild configuration and build system.       #
+#                                                                              #
+#    Copyright (C) 2003 Marko Grönroos <magi@iki.fi>                           #
+#                                                                              #
+################################################################################
+#                                                                              #
+#   This library is free software; you can redistribute it and/or              #
+#   modify it under the terms of the GNU Library General Public                #
+#   License as published by the Free Software Foundation; either               #
+#   version 2 of the License, or (at your option) any later version.           #
+#                                                                              #
+#   This library is distributed in the hope that it will be useful,            #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of             #
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU          #
+#   Library General Public License for more details.                           #
+#                                                                              #
+#   You should have received a copy of the GNU Library General Public          #
+#   License along with this library; see the file COPYING.LIB.  If             #
+#   not, write to the Free Software Foundation, Inc., 59 Temple Place          #
+#   - Suite 330, Boston, MA 02111-1307, USA.                                   #
+#                                                                              #
+################################################################################
+
+################################################################################
+# This script installs all MagiCBuild files under the current directory
+################################################################################
+
+################################################################################
+# Options
+################################################################################
+MKDIR_FLAGS="-vp"
+CP_FLAGS="-u -v"
+
+################################################################################
+# Resolve MagiCBuild directories
+################################################################################
+magic_builddir=`dirname $0`
+magic_topdir=`dirname $magic_builddir`
+
+################################################################################
+# Build directories
+################################################################################
+mkdir $MKDIR_FLAGS build
+
+################################################################################
+# Copy files
+################################################################################
+cp $CP_FLAGS $magic_topdir/configure .
+cp $CP_FLAGS $magic_builddir/makefile.template Makefile.template
+cp $CP_FLAGS $magic_builddir/install-magicbuild build
+cp $CP_FLAGS $magic_builddir/magicdef.mk build
+cp $CP_FLAGS $magic_builddir/magiccmp.mk build
+cp $CP_FLAGS $magic_builddir/magicdist.mk build
+cp $CP_FLAGS $magic_builddir/magictop.mk build
+cp $CP_FLAGS $magic_builddir/magicver.mk build
+cp $CP_FLAGS $magic_builddir/toDox.pl build
+

@@ -1,0 +1,54 @@
+%define version @VERSION@
+Summary: MagiClib C++ base class library
+Name: magic
+Version: %{version}
+Release: 1
+Copyright: LGPL
+Packager: Marko Grönroos <magi@iki.fi>
+Group: Development/Libraries
+Source: http://magi.yok.utu.fi/~magi/ohjelmointi/magic-%{version}.tar.gz
+URL: http://inanna.sourceforge.net/
+Prefix: /usr
+BuildRoot: /tmp/%{name}-buildroot
+
+%description
+Independent C++ base class library that provides standard classes such
+as String, Array<>, PackArray<>, Map<key,value>, List<>, Matrix,
+Vector, HTMLQuery, etc.
+  Also has dynamic runtime Class handling, much more advanced than
+standard C++. Classes declared as dynamic can be instantiated
+dynamically by name.
+  Includes application framework that handles basic command-line
+parameters, default exception handling, and debugger-enabled assertion
+failures. Includes also advanced memory debugging (disabled by
+default); allocation tracking (stores location of allocation and
+optional comments), and marks deleted blocks in special manner.
+
+%prep
+%setup
+%build
+export KDEDIR=%{prefix}
+./configure --prefix=$KDEDIR --with-install-root=$RPM_BUILD_ROOT
+make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
+
+%install
+export KDEDIR=%{prefix}
+rm -rf $RPM_BUILD_ROOT
+make prefix=$RPM_BUILD_ROOT$KDEDIR install
+
+cd $RPM_BUILD_ROOT
+#find . -type d | sed '1,2d;s,^\.,\%attr(-\,root\,root) \%dir ,' > $RPM_BUILD_DIR/%{name}-%{version}/file.list.%{name}
+#find . -type f | sed 's,^\.,\%attr(-\,root\,root) ,' >> $RPM_BUILD_DIR/%{name}-%{version}/file.list.%{name}
+#find . -type l | sed 's,^\.,\%attr(-\,root\,root) ,' >> $RPM_BUILD_DIR/%{name}-%{version}/file.list.%{name}
+
+find . -type d | sed '1,2d;s,^\.,\%dir ,' > $RPM_BUILD_DIR/%{name}-%{version}/file.list.%{name}
+find . -type f | sed 's,^\.,,' >> $RPM_BUILD_DIR/%{name}-%{version}/file.list.%{name}
+find . -type l | sed 's,^\.,,' >> $RPM_BUILD_DIR/%{name}-%{version}/file.list.%{name}
+
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%changelog
+
+%files -f file.list.%{name}
