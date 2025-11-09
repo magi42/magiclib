@@ -1,7 +1,7 @@
 /***************************************************************************
  *   This file is part of the MagiC++ library.                             *
  *                                                                         *
- *   Copyright (C) 1998-2002 Marko Grönroos <magi@iki.fi>                  *
+ *   Copyright (C) 1998-2002 Marko Grï¿½nroos <magi@iki.fi>                  *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
@@ -146,7 +146,7 @@ void GenHash::set (const Comparable* key, Object* value) {
 				delete key;					// Dispose the excess key
 				break;
 			}
-	
+
 			// That wasn't the right bucket. If there are no more
 			// buckets, create a new one and exit the search
 			if (!bucket->next) {
@@ -168,7 +168,7 @@ void GenHash::set (const Comparable* key, Object* value) {
 	bucket->pair.value = value;
 }
 
-const Object* GenHash::get (const Comparable& key) const throw (not_found) {
+const Object* GenHash::get (const Comparable& key) const {
 	for (const HashBucket* sanko = hash.getp (key.hashfunc(hashsize)); sanko; sanko=sanko->next) {
 		ASSERT (sanko->pair.key != (void*)0x1);
 		ASSERT (sanko->pair.value != (void*)0x1);
@@ -187,9 +187,9 @@ const Object* GenHash::get (const Comparable& key) const throw (not_found) {
 		} else
 			throw not_found ("CMap object not found with a key");
 	} else {
-		// Ilmoitetaan virheestä palauttamalla NULL
+		// Ilmoitetaan virheestï¿½ palauttamalla NULL
 		return NULL;
-	}	
+	}
 	*/
 }
 
@@ -203,15 +203,15 @@ void GenHash::remove (const Comparable& key) {
 	for (HashBucket* sanko = hash.getp (bucket); sanko; sanko=sanko->next) {
 		if (sanko->pair.match (key)) {
 			if (prev) {
-				// Ei olla ensimmäinen
+				// Ei olla ensimmï¿½inen
 				prev->next = sanko->next;
 				sanko->next = NULL;
 				delete sanko;
 			} else {
-				// Ollaan ensimmäinen
+				// Ollaan ensimmï¿½inen
 
 				if (sanko->next) {
-					// Perässä on muita
+					// Perï¿½ssï¿½ on muita
 					HashBucket* next = sanko->next;
 					sanko->next = NULL;
 					hash.put (next, bucket);
@@ -297,7 +297,7 @@ void GenHashIter::next () {
 		else
 			bucket++;
 	}
-	
+
 	while (bucket < hash->hash.size() && (currbucket=(HashBucket*)(hash->hash.getp (bucket))) == NULL)
 		bucket++;
 
@@ -348,14 +348,14 @@ const Object& GenHashIter::getvalue () const {
 void splitpairs (CMap<String,String>& trg, const String& source,
 				 char psep, char rsep) {
 
-	// Tyhjennetään kakat pois
+	// Tyhjennetï¿½ï¿½n kakat pois
 	trg.empty ();
-	
-	// Halkaistaan ensin kentät erilleen ja laitetaan väliaikaiseen vektoriin
+
+	// Halkaistaan ensin kentï¿½t erilleen ja laitetaan vï¿½liaikaiseen vektoriin
 	Array<String> tmp;
 	source.split (tmp, rsep);
 
-	// Käydään parit sisältävät merkkijonot läpi
+	// Kï¿½ydï¿½ï¿½n parit sisï¿½ltï¿½vï¿½t merkkijonot lï¿½pi
 	for (int i=0; i<tmp.size(); i++) {
 		// Halkaistaan pari kahtia
 		int pos = tmp[i].find (psep);
@@ -469,17 +469,17 @@ StringMap readStringMap (TextIStream& in, const char* path) {
 			}
 		}
 	} // while not EOF
-	
+
 	return result;
 }
 
 void writeStringMap (const StringMap& map, TextOStream& out)
 {
 	// TODO: Handle sectioning correctly
-	
+
 	// Write everything under the default section
 	out << "[]\n";
-	
+
 	forStringMap (map, mapi)
 		out << mapi.key() << "=" << mapi.value() << "\n";
 }

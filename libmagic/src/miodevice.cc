@@ -1,7 +1,7 @@
 /***************************************************************************
  *   This file is part of the MagiC++ library.                             *
  *                                                                         *
- *   Copyright (C) 1998-2002 Marko Grönroos <magi@iki.fi>                  *
+ *   Copyright (C) 1998-2002 Marko Grï¿½nroos <magi@iki.fi>                  *
  *                                                                         *
  ***************************************************************************
  *                                                                         *
@@ -38,7 +38,7 @@ BEGIN_NAMESPACE (MagiC);
 //                  |  |   | |  \   ___           ___   ___                  //
 //                  |  |   | |   | /   ) |   | | |   \ /   )                 //
 //                  |  |   | |   | |---   \ /  | |     |---                  //
-//                 _|_ `___´ |__/   \__    V   |  \__/  \__                  //
+//                 _|_ `___ï¿½ |__/   \__    V   |  \__/  \__                  //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -203,13 +203,11 @@ bool IODevice::reset ()
 }
 
 /*******************************************************************************
- * Reads a data block from the device.
  *
  *  @return Returns the number of bytes actually read, or 0 if none.
  ******************************************************************************/
 int IODevice::readBlock (char* data,		/**< Data buffer           */
 						 uint maxlen		/**< Length of the buffer. */ )
-	throw (device_not_open)
 {
 	MUST_OVERLOAD;
 	return 0;
@@ -223,12 +221,10 @@ int IODevice::readBlock (char* data,		/**< Data buffer           */
 int IODevice::writeBlock (
 	const char* data,	/**< (output) Data buffer           */
 	uint len)			/**< (input)  Length of the buffer. */
-	throw (device_not_open)
 {
 	MUST_OVERLOAD;
 	return 0;
 }
-
 /*******************************************************************************
  * Reads a newline (\\n) terminated line from device.
  *
@@ -242,7 +238,6 @@ int IODevice::writeBlock (
  *  // Read in chunks
  *  char buffer [1024];
  *  int bytesRead = 0;
- *  int totalRead = 0;
  *  while (bytesRead = mpDevice->readLine (buffer, 1024)) {
  *      linebuf.append (buffer);
  *      totalRead += bytesRead;
@@ -258,12 +253,10 @@ int IODevice::writeBlock (
 int IODevice::readLine (
 	char* data,			/**< (output) Data buffer           */
 	uint maxlen)		/**< (input)  Length of the buffer. */
-	throw (device_not_open)
 {
 	int pos = 0; // Current position in the data buffer.
 
 	// Read until the maximum length (minus 1 for the terminating zero) is
-	// reached, or the end of file is reached.
 	for (pos=0; !atEnd() && pos< int(maxlen)-1; pos++) {
 		char ch = getch();
 		data[pos] = ch;
@@ -281,7 +274,6 @@ int IODevice::readLine (
  *  @return Returns the number of bytes actually written, or 0 if none.
  *****************************************************************************/
 int IODevice::writeBlock (const String& str	/**< Data buffer to write. */ )
-	throw (device_not_open)
 {
 	return writeBlock ((const char*) str, str.length());
 }
@@ -292,7 +284,6 @@ int IODevice::writeBlock (const String& str	/**< Data buffer to write. */ )
  *  @return String buffer.
  *****************************************************************************/
 Ref<String> IODevice::readAll ()
-	throw (device_not_open)
 {
 	Ref<String> result = new String ();
 	char buffer[1024];
@@ -303,7 +294,7 @@ Ref<String> IODevice::readAll ()
 			break;
 		result->append (buffer, bytesread);
 	}
-	
+
 	return result;
 }
 
@@ -314,10 +305,9 @@ Ref<String> IODevice::readAll ()
  *  newline characters.
  ******************************************************************************/
 List<String>* IODevice::readLines ()
-	throw (device_not_open)
 {
 	List<String>* result = new List<String> ();
-	
+
 	return result;
 }
 
@@ -327,7 +317,6 @@ List<String>* IODevice::readLines ()
  *  @return The character read.
  ******************************************************************************/
 int IODevice::getch ()
-	throw (device_not_open)
 {
 	MUST_OVERLOAD;
 	return 0;
@@ -337,7 +326,6 @@ int IODevice::getch ()
  * Writes one character to device.
  ******************************************************************************/
 void IODevice::putch (char)
-	throw (device_not_open)
 {
 	MUST_OVERLOAD;
 }
@@ -348,7 +336,6 @@ void IODevice::putch (char)
  *  The function has no meaning if the device is already at beginning.
  *****************************************************************************/
 void IODevice::ungetch (char)
-	throw (device_not_open)
 {
 	MUST_OVERLOAD;
 }
@@ -392,7 +379,6 @@ File::File (FILE* file /**< An open FILE stream object to use. */)
  ******************************************************************************/
 File::File (const String& name	/**< Name of the file to open. */,
 			int mode			/**< Mode for opening. See @ref open for details. */)
-	throw (open_failure)
 		: IODevice ()
 {
 	mName	= name;
@@ -404,7 +390,7 @@ File::File (const String& name	/**< Name of the file to open. */,
 		if (! ((mode & IO_Readable) || (mode & IO_Writable)))
 			throw open_failure (i18n("File '%1' must be opened either readable or writable or both; mode was %2.")
 								.arg(mName).arg(mode));
-		
+
 		// Open the file
 		if (! open (mode))
 			throw open_failure (i18n("Opening file '%1' with flags %2 failed for some reason.")
@@ -419,7 +405,7 @@ File::File (const String& name	/**< Name of the file to open. */,
  *  @exception system_failure Thrown if there occurred some system
  *  problem while checking the existence of the file.
  ******************************************************************************/
-bool File::exists () const throw (system_failure)
+bool File::exists () const
 {
 	struct stat statbuf; // For storing the status information about the file.
 
@@ -435,7 +421,7 @@ bool File::exists () const throw (system_failure)
 		throw system_failure (i18n("System error '%1' while checking the existence of file '%2'.")
 							  .arg(strerror(errno)).arg(mName));
 	}
-	
+
 	return true; // File exists.
 }
 
@@ -465,21 +451,21 @@ bool File::open (int mode)
 	String fopenMode = translateToFOpenMode (mode);
 	if (fopenMode.isEmpty())
 		return false; // Failed
-	
+
 	// Try to open using the standard C open
 	FILE* file = fopen ((CONSTR) mName, (CONSTR) fopenMode);
 
 #ifdef IODEV_USE_EXCEPTIONS
 	if (!file) {
 		// Error state, errno has been set
-		
+
 		if (errno == EINVAL)
 			 (i18n("Invalid mode flags '%1' for opening file '%2'.")
 								 .arg(fopenMode).arg(mName));
 		if (errno == ENOENT)
 			throw file_not_found (i18n("File '%2' not found.")
 								  .arg(mName));
-			
+
 		throw open_failure (i18n("Error '%1' while trying to open file '%2'.")
 							.arg(strerror(errno)).arg(mName));
 	}
@@ -599,7 +585,6 @@ bool File::atEnd () const
  ******************************************************************************/
 int File::readBlock (char* data,	/**< Data buffer to receive the block read. */
 					 uint maxlen	/**< Maximum number of bytes to read. */)
-	throw (device_not_open)
 {
 	ASSERT (data && maxlen>0);
 	if (atEnd())
@@ -619,7 +604,6 @@ int File::readBlock (char* data,	/**< Data buffer to receive the block read. */
  ******************************************************************************/
 int File::readLine (char* data,		/**< Data buffer to receive the line. */
 					uint maxlen		/**< Maximum number of bytes to read. */)
-	throw (device_not_open)
 {
 	ASSERT (data && maxlen>0);
 	if (atEnd())
@@ -645,7 +629,6 @@ int File::readLine (char* data,		/**< Data buffer to receive the line. */
  ******************************************************************************/
 int File::readLine (String& buffer,	/**< Data buffer to receive the line. */
 					int maxlen		/**< Maximum number of bytes to read or -1 for unlimited. */)
-	throw (device_not_open)
 {
 	if (atEnd())
 		return 0;
@@ -669,7 +652,6 @@ int File::readLine (String& buffer,	/**< Data buffer to receive the line. */
  ******************************************************************************/
 int File::writeBlock (const char* data,	/**< Data block to write. */
 					  uint len			/**< Length of the data block. */)
-	throw (device_not_open)
 {
 	if (!isOpen())
 		throw device_not_open (i18n ("File not open when writing to file '%1'.").arg(mName));
@@ -684,20 +666,19 @@ int File::writeBlock (const char* data,	/**< Data block to write. */
  *
  ******************************************************************************/
 int File::getch ()
-	throw (device_not_open)
 {
 	if (!isOpen())
 		throw device_not_open (i18n ("File not open when reading a from file '%1'.").arg(mName));
 
 	// TODO: Error handling
 	int result = ::fgetc(mpFile);
-	
+
 	if (result == EOF) {
 		setState (IO_EOS);
 		result = 0;
 		return (-1);
 	}
-	
+
 	return result;
 }
 
@@ -705,12 +686,11 @@ int File::getch ()
  *
  ******************************************************************************/
 void File::putch (char ch)
-	throw (device_not_open)
 {
 	if (!isOpen())
 		throw device_not_open (i18n ("File not open when writing to file '%1'.").arg(mName));
 
-	// int status = 
+	// int status =
 	fputc (ch, mpFile);
 	// TODO: Error handling
 }
@@ -722,16 +702,15 @@ void File::putch (char ch)
  * the function returns the object to non-EOF state.
  ******************************************************************************/
 void File::ungetch (char ch)
-	throw (device_not_open)
 {
 	if (!isOpen())
 		throw device_not_open (i18n ("File not open when ungetting from file '%1'.").arg(mName));
-	
+
 	// If at EOS, return to open state.
 	if (state() & IO_EOS)
 		setState (IO_EOS, false);
 
-	// int status = 
+	// int status =
 	ungetc (ch, mpFile);
 	// TODO: Error handling
 }
@@ -747,7 +726,7 @@ int File::handle ()
 /*******************************************************************************
  * Translates IODevice mode flags to system mode flags for fopen().
  ******************************************************************************/
-String File::translateToFOpenMode (int mode /**< IODevice mode flags to translate. */) throw (invalid_flags)
+String File::translateToFOpenMode (int mode /**< IODevice mode flags to translate. */)
 {
 	if (mode & IO_Readable)
 		if (mode & IO_Writable)
@@ -773,7 +752,7 @@ String File::translateToFOpenMode (int mode /**< IODevice mode flags to translat
 /*******************************************************************************
  * Translates IODevice mode flags to system mode flags for open().
  ******************************************************************************/
-int File::translateToOpenMode (int mode /**< IODevice mode flags to translate. */) throw (invalid_flags)
+int File::translateToOpenMode (int mode /**< IODevice mode flags to translate. */)
 {
 	int sysmode = 0;
 	if (mode & IO_Readable)
@@ -883,7 +862,6 @@ bool Buffer::atEnd () const
 }
 
 int Buffer::readBlock (char* data, uint maxlen)
-	throw (device_not_open)
 {
 	if ((uint) mPosition >= size())
 		return 0;
@@ -898,15 +876,13 @@ int Buffer::readBlock (char* data, uint maxlen)
 }
 
 int Buffer::writeBlock (const char* data, uint len)
-	throw (device_not_open)
 {
-	mpBuffer->replace (mPosition, data, len); 
+	mpBuffer->replace (mPosition, data, len);
 	mPosition += len;
 	return len;
 }
 
 int Buffer::readLine (char* data, uint maxlen)
-	throw (device_not_open)
 {
 	if ((uint) mPosition >= size())
 		return 0;
@@ -934,14 +910,12 @@ int Buffer::readLine (char* data, uint maxlen)
 }
 
 int Buffer::writeBlock (const String& str)
-	throw (device_not_open)
 {
 	mpBuffer->append (str);
 	return str.length();
 }
 
 int Buffer::getch ()
-	throw (device_not_open)
 {
 	if ((uint) mPosition >= size())
 		return -1; // EOS
@@ -951,7 +925,6 @@ int Buffer::getch ()
 }
 
 void Buffer::putch (char c)
-	throw (device_not_open)
 {
 	// Use reserved buffer if possible, otherwise append (grow the
 	// buffer).
@@ -964,7 +937,6 @@ void Buffer::putch (char c)
 }
 
 void Buffer::ungetch (char c)
-	throw (device_not_open)
 {
 	if (mPosition==0)
 		return;
