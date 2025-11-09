@@ -1,0 +1,30 @@
+This file contains common problem patterns.
+
+--------------------------------------------------------------------------------
+NAME: Unexpected Abort before main ()
+DATE: Added 20.2.2001
+AUTHOR: Magi
+
+SYMPTOMS:
+
+	Program terminates and prints only: "Abort". Debugger
+	backtrace doesn't display anything informative about the exact
+	location of the problem, but something about exceptions.
+
+POSSIBLE CAUSE:
+
+	An exception was thrown during global variable initialization,
+	but was not caught.
+
+POSSIBLE LOCATION:
+
+	MagiClib may have internal weaknesses in parameter checking
+	that could cause this. The problem can also occur during
+	initialization of global user variables.
+
+FIX:
+
+	Global variable initializations should be robust and
+	error-free and not let exceptions escape.
+
+--------------------------------------------------------------------------------

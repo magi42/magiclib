@@ -1,0 +1,204 @@
+#LyX 1.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 220
+\textclass docbook-book
+\language english
+\inputencoding default
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing single 
+\papersize Default
+\paperpackage a4
+\use_geometry 0
+\use_amsmath 0
+\use_natbib 0
+\use_numerical_citations 0
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language swedish
+\quotes_times 2
+\papercolumns 1
+\papersides 2
+\paperpagestyle fancy
+
+\layout Title
+
+MagiC++ Library
+\newline 
+Developer's Guide
+\layout Author
+
+Marko Grönroos <
+\emph on 
+magi@iki.fi
+\emph toggle 
+>
+\layout Abstract
+
+MagiC++ library is a lightweight base class library for C++, with all the
+ most common functionalities such as strings, I/O, streams, arrays, lists,
+ tables, associative maps, etc.
+ Its intuitive interfaces provide an easy-to-use solution for rapid development
+ of C++ applications.
+ It is licensed with the GNU Lesser General Public License.
+\layout Section
+
+Introduction
+\layout Standard
+
+The two most well known C++ libraries in Linux are probably Qt and STL.
+ Qt's weakness is its licensing; it's GPL, while one might want to use a
+ library that is more usable for commercial purposes.
+ MagiC++ library is licenced under the LGPL license.
+ Qt is also gigantic because of its graphical user interface functionality.
+ In non-graphical systems, you do not want to have that bloated development
+ library.
+\layout Standard
+
+The interfaces of many important MagiC++ classes are very much like their
+ Qt equivalents, down to most of their method names.
+\layout Standard
+
+MagiC++ library provides a simple, lightweight solution for rapid development
+ of C++ applications.
+ It combines cleanly with other libraries, such as with Qt.
+\layout Subsection
+
+First application
+\layout Standard
+
+Let us write a small program using the MagiC++ library and application framework
+:
+\layout Code
+
+#include <magic/mstring.h>
+\newline 
+#include <magic/mapp.h>
+\newline 
+
+\newline 
+Main ()
+\newline 
+{
+\newline 
+    String mystring = 
+\begin_inset Quotes sld
+\end_inset 
+
+Hello, world!
+\begin_inset Quotes srd
+\end_inset 
+
+;
+\newline 
+    sout << mystring << 
+\begin_inset Quotes sld
+\end_inset 
+
+
+\backslash 
+n
+\begin_inset Quotes srd
+\end_inset 
+
+;
+\newline 
+}
+\layout Standard
+
+Here, 
+\emph on 
+sout
+\emph toggle 
+ is the standard output stream.
+ You can compile the program with command:
+\layout Standard
+
+g++ -o test test.cc -lmagic -lmagica
+\layout Standard
+
+This...
+\layout Section
+
+Objects
+\layout Subsection
+
+Object hierarchy
+\layout Subsection
+
+
+\emph on 
+Object
+\emph toggle 
+ superclass and run-time class information
+\layout Subsection
+
+Object creation
+\layout Standard
+
+In addition to the normal C++ ways to create a class instance, MagiC++ library
+ provides dynamic creation of objects by their class name.
+\layout Standard
+
+First, you need to define the class as dynamic, as described above.
+\layout Standard
+
+class MyClass : public Object { 
+\newline 
+};
+\layout Section
+
+-String handling
+\layout Standard
+
+Laitetaas tähän kuva!
+\layout Standard
+
+
+\begin_inset Graphics FormatVersion 1
+	filename nfig/streams.eps
+	display default
+	size_type 0
+	rotateOrigin center
+	lyxsize_type 0
+
+\end_inset 
+
+
+\layout Section
+
+I/O devices
+\layout Section
+
+Streams
+\layout Section
+
+Containers
+\layout Subsection
+
+Arrays
+\layout Subsection
+
+Tables
+\layout Subsection
+
+Lists
+\layout Subsection
+
+Associative maps
+\layout Section
+
+Error handling
+\layout Section
+
+Debugging
+\layout Section
+
+Application framework
+\layout Section
+
+Coding conventions
+\the_end
