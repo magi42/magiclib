@@ -1,7 +1,7 @@
 ################################################################################
 #    This file is part of the MagiC++ SDK.                                     #
 #                                                                              #
-#    Copyright (C) 2003 Marko Grönroos <magi@iki.fi>                           #
+#    Copyright (C) 2003 Marko Grï¿½nroos <magi@iki.fi>                           #
 #                                                                              #
 ################################################################################
 #                                                                              #
@@ -52,7 +52,8 @@ include $(SRCDIR)/build/magicdef.mk
 ################################################################################
 # Recursively call sub-makes for modules
 ################################################################################
-makemodules = libmagic libnhp libinanna libannalee
+makemodules = libmagic libinanna libnhp
+# libannalee
 
 ################################################################################
 # Include build rules

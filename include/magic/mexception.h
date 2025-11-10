@@ -128,7 +128,7 @@ EXCEPTIONCLASS (not_implemented);
 
 #define failtrace_begin try {
 #define failtrace_end \
-	} catch (Exception e) { \
+	} catch (const Exception& e) { \
 		throw forwarded_failure (format ("%s\n%%ERR: Exception forwaded at %s[%d]:%s()", \
 										 (CONSTR) e.what(), __FILE__, __LINE__, __FUNCTION__)); \
 	}
@@ -150,7 +150,7 @@ EXCEPTIONCLASS (not_implemented);
 #define trywith(expr,err) \
 	try { \
 		expr; \
-	} catch (Exception e) { \
+	} catch (const Exception& e) { \
 		throw forwarded_failure (format ("%s\n%%ERR: Exception forwaded at %s[%d]:%s()\n%%ERR: %s", \
 										 (CONSTR) e.what(), __FILE__, __LINE__, __FUNCTION__, (CONSTR) err)); \
 	}
