@@ -1,25 +1,18 @@
-================================================================================
-$Author: magi $ $Date: 2003/12/31 14:31:17 $ $Revision: 1.1 $
 
-MagiC++ library (MagiCLib)
+# MagiC++ library (MagiCLib)
 
-Copyright (C) 1997-2003 Marko Gr�nroos (magi@iki.fi)
+Copyright (C) 1997-2003 Marko Grönroos (magi@iki.fi) – 2003/12/31
 
 Distributed under GNU Lesser General Public License.
-================================================================================
 
-========
-Contents
-========
+## Contents
 
   * Introduction
   * Installation
   * Compatibility
   * Other Notes
 
-============
-Introduction
-============
+## Introduction
 
 MagiC++ library (MagiCLib) is a lightweight C++ base class library,
 released under GNU LGPL (Lesser General Public License). It's API is
@@ -38,47 +31,41 @@ else but the basic object hierarchy, basic containers, and a few
 special features. Some special stuff is provided in supplementary
 libraries.
 
----------------------------------------------------------------------
 LISENCE NOTICE: While the libraries are under LGPL, any applications
                 included in the package, such as any test code and
                 samples, are under GNU GPL (General Public License).
----------------------------------------------------------------------
 
-============
-Installation
-============
+## Installation
 
 This is important!
 
-The MagiCLib should be installed so that its include files are in directory
+  The MagiCLib should be installed so that its include files are in directory
 INCLUDEDIR/magic/*.h.
 
-  Thus you can include the headers with, for example:
+Thus you can include the headers with, for example:
 
 	#include <magic/object.h>
 
 This is done as follows:
 
+```
    $ tar zxf magic-1.0.tar.gz
    $ cd magic-1.0
    $ ./configure --prefix=/usr/local --includedir=/usr/local/include/magic
    $ make deps
    $ make
    $ make install
+```
 
--------------
-COMPATIBILITY
--------------
+## COMPATIBILITY
 
 MagiClib currently compiles under i386 Linux.
 
 It does not compile under Solaris, because it gets math-exception
 errors. There are #ifdef guards against this, but they don't really
 work currently.
-	
------------
-OTHER NOTES
------------
+
+## OTHER NOTES
 
 MagiClib is my personal base class library. The most important classes are
 String, Map, Array (and its variants), List, and Table.
